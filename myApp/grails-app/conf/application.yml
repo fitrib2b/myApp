@@ -7,7 +7,8 @@ grails:
         transactionManagement:
             proxies: false
     gorm:
-        # Whether to autowire entities. 
+        failOnError: true
+        # Whether to autowire entities.
         # Disabled by default for performance reasons.
         autowire: false         
         reactor:
@@ -90,6 +91,7 @@ endpoints:
 
 ---
 hibernate:
+    globally_quoted_identifiers: true
     cache:
         queries: false
         use_second_level_cache: true
@@ -97,18 +99,38 @@ hibernate:
         region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
 
 dataSource:
-    pooled: true
-    jmxExport: true
     driverClassName: org.mariadb.jdbc.Driver
     dialect: org.hibernate.dialect.MySQL5InnoDBDialect
     username: dev
     password: dev
+    url: jdbc:mariadb://${DATASOURCE_URL_IP:localhost}:3306/my_app
+    dbCreate: create
+    properties:
+        jmxEnabled: true
+        initialSize: 5
+        maxActive: 50
+        minIdle: 5
+        maxIdle: 25
+        maxWait: 10000
+        maxAge: 600000
+        timeBetweenEvictionRunsMillis: 5000
+        minEvictableIdleTimeMillis: 60000
+        validationQuery: SELECT 1
+        validationQueryTimeout: 3
+        validationInterval: 15000
+        testOnBorrow: true
+        testWhileIdle: true
+        testOnReturn: false
+        jdbcInterceptors: ConnectionState
+        defaultTransactionIsolation: 2 # TRANSACTION_READ_COMMITTED
+        dbProperties:
+            # let Tomcat JDBC Pool handle reconnecting
+            autoReconnect: false
 
 environments:
     development:
         dataSource:
-            dbCreate: none
-            url: jdbc:mariadb://${DATASOURCE_URL_IP:localhost}:3306/my_app
+            dbCreate: create
     test:
         dataSource:
             dbCreate: update
