@@ -1,4 +1,4 @@
-package myapp
+package myapp.checklist
 
 class Checklist {
 
@@ -13,7 +13,7 @@ class Checklist {
         taskName maxSize: 255, nullable: false
         complete inList: ['y','n'], nullable: false
         dateCreated date: true, nullable: false, validator: {val -> validate(val)}
-        dateCompleted date: true, nullable: false, validator: {val ->validate(val)}
+        dateCompleted date: true, nullable: true, validator: {val -> validate(val)}
     }
 
 }
