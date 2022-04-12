@@ -11,6 +11,12 @@ class ChecklistService {
 
     @Transactional
     def saveChecklist(String tName, Boolean done, Date dCreate, Date dDone) {
-        new Checklist(taskName: tName, complete: done, dateCreated: dCreate, dateCompleted: dDone).save()
+
+        Date dateCompleted = new Date()
+        if (!done) {
+            dateCompleted = null
+        }
+
+        new Checklist(taskName: tName, complete: done, dateCompleted: dateCompleted).save()
     }
 }
