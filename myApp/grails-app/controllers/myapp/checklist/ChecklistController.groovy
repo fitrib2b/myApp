@@ -17,6 +17,18 @@ class ChecklistController {
         Date dDone = params.dateCompleted
         checklistService.saveChecklist(tName, done, dCreate, dDone)
 
+    }
 
+    def search() {
+//        def results = Checklist.findAll(params.search)
+        render view: "search"
+    }
+
+    def getSearchResult(){
+
+        def results = Checklist.findAllByTaskName(params.search)
+        println(params.search);
+
+        render view: "search", model: [results: results]
     }
 }
