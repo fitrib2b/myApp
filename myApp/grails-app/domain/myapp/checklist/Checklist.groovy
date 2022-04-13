@@ -16,8 +16,8 @@ class Checklist {
         id column: 'id', generator: 'uuid', type: 'string'
         taskName maxSize: 255, nullable: false
         complete nullable: false
-        dateCreated date: true, nullable: false//, validator: {val -> validate(val)}
-        dateCompleted date: true, nullable: true//, validator: {val -> validate(val)}
+        dateCreated date: true, nullable: false //, validator: {val -> validate(val)}
+        dateCompleted date: true, nullable: true //, validator: {val -> validate(val)}
     }
 
 }

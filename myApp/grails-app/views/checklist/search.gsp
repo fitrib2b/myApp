@@ -8,7 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <title></title>
+<meta name="layout" content="main" />
+    <title>Search Checklist</title>
 %{--<g:javascript src="search.js" />--}%
 <style>
 table, th, td {
@@ -31,19 +32,19 @@ table, th, td {
         <g:textField name="search" value="" placeholder="Insert task name here"/>
         <button type="submit" class="submit-btn">SEARCH</button>
     </g:form>
-    <table style="width:400px">
+    <table style="width:400px" align="center">
         <tr>
             <b>
-            <th>ID</th>
+            <th>No.</th>
             <th>Task Name</th>
             <th>Date Created</th>
             <th>Date Completed</th>
             <th>Completed</th>
             </b>
         </tr>
-        <g:each var = "r" in = "${results}">
+        <g:each var = "r" in = "${results}" status="i">
         <tr>
-            <td>${r.id}</td>
+            <td>${i+1}</td>
             <td>${r.taskName}</td>
             <td>${r.dateCreated}</td>
             <td>${r.dateCompleted}</td>

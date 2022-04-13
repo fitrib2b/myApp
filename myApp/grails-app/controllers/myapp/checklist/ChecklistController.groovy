@@ -26,8 +26,8 @@ class ChecklistController {
 
     def getSearchResult(){
 
-        def results = Checklist.findAllByTaskName(params.search)
-        println(params.search);
+        String strText = "%"+params.search+"%"
+        def results = Checklist.findAllByTaskNameIlike(strText)
 
         render view: "search", model: [results: results]
     }
