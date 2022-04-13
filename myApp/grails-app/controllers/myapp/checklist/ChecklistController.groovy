@@ -17,18 +17,24 @@ class ChecklistController {
         Date dDone = params.dateCompleted
         checklistService.saveChecklist(tName, done, dCreate, dDone)
 
+        render view: 'create'
+
     }
 
     def search() {
 //        def results = Checklist.findAll(params.search)
+        if(params.search==null){
+            render view: "search"
+        }else{
+            searchResult()
+        }
         render view: "search"
     }
 
-    def getSearchResult(){
+    def searchResult(){
 
         String strText = "%"+params.search+"%"
-        def results = Checklist.findAllByTaskNameIlike(strText)
-
+        def results = checklistService.getSearchResult(strText)
         render view: "search", model: [results: results]
     }
 }

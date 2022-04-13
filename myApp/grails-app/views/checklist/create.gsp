@@ -16,7 +16,7 @@
 
         <g:form name="addForm" action="save" id="${task?.id}">
             Task: <g:textField name="taskName" value="${task?.taskName}"/><br/>
-            Completed: <g:checkBox name="complete" value="${task?.complete}"/><br/>
+            Completed: <g:checkBox name="complete" value="${task?.complete}" default="N"/><br/>
             Create Date: <g:datePicker name="dateCreated" value="${task?.dateCreated?:(new Date())}"/><br/>
             Completed Date: <g:datePicker name="dateCompleted" value="${task?.dateCompleted?:(new Date())}"/><br/>
             <g:submitButton name="save" value="Save" />

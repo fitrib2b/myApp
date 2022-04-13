@@ -17,6 +17,11 @@ class ChecklistService {
             dateCompleted = null
         }
 
-        new Checklist(taskName: tName, complete: done, dateCompleted: dateCompleted).save()
+        new Checklist(taskName: tName, dateCreated: dCreate, complete: done, dateCompleted: dateCompleted).save()
+    }
+
+    def List<Checklist>getSearchResult(String strText){
+        def results = Checklist.findAllByTaskNameIlike(strText,[readOnly: true])
+        return results
     }
 }
