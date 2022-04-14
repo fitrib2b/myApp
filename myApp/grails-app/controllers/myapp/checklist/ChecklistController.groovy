@@ -37,4 +37,17 @@ class ChecklistController {
         def results = checklistService.getSearchResult(strText)
         render view: "search", model: [results: results]
     }
+
+    def update(){
+
+    }
+
+    def delete(){
+
+        String id = params.id
+        checklistService.deleteChecklist(id)
+        String strText = "%"+"%"
+        def results = checklistService.getSearchResult(strText)
+        render view: "search", model: [results: results]
+    }
 }
