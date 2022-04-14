@@ -20,8 +20,14 @@ class ChecklistService {
         new Checklist(taskName: tName, dateCreated: dCreate, complete: done, dateCompleted: dateCompleted).save()
     }
 
-    def List<Checklist>getSearchResult(String strText){
+    def getSearchResult(String strText){
         def results = Checklist.findAllByTaskNameIlike(strText,[readOnly: true])
         return results
+    }
+
+    @Transactional
+    def deleteChecklist(String id){
+        def checkList = Checklist.get(id)
+        checkList.delete()
     }
 }

@@ -30,12 +30,12 @@ table, th, td {
 %{--</g:javascript>--}%
 
     <div style="margin: auto" align="center">
-    <g:form action="searchResult" method="post" >
+    <g:form action="search" method="post" >
         <g:textField name="search" value="" placeholder="Insert task name here" style="margin:auto"/>
         <button type="submit" class="submit-btn" style="margin:auto">SEARCH</button>
     </g:form>
     </div>
-    <table style="width:400px; margin: auto">
+    <table class="table-bordered centered">
         <tr>
             <b>
             <th>No.</th>
@@ -55,8 +55,9 @@ table, th, td {
             <td>${r.complete}</td>
             <g:hiddenField name="id" value="${r.id}"/>
             <td>
+                <button class="edit btn btn-warning">EDIT</button>
                 <g:link action="delete" id="${r.id}">
-                    <button class="delete-btn delete" name="delete-btn">DELETE</button>
+                    <button class="btn btn-danger delete" name="delete-btn">DELETE</button>
                 </g:link>
             </td>
         </tr>
