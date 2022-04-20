@@ -8,74 +8,76 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-<meta name="layout" content="main" />
+    <meta name="layout" content="main"/>
     <title>Search Checklist</title>
-%{--<g:javascript src="search.js" />--}%
-<style>
-table, th, td {
-    border: 1px solid black;
-}
-</style>
-</head>
-
-<body>
-%{--<g:javascript>--}%
-%{--    (  $(".submit-btn").on('click',onClickSearchBtn);--}%
-%{--    document.querySelectorAll(".submit-btn").addEventListner('click', onClickSearchBtn);--}%
-
-
-%{--    function onClickSearchBtn() {--}%
-%{--        console.log("I am here");--}%
-%{--    };--}%
-%{--</g:javascript>--}%
-
-    <div style="margin: auto" align="center">
-    <g:form action="search" method="post" >
-        <g:textField name="search" value="" placeholder="Insert task name here" style="margin:auto"/>
-        <button type="submit" class="submit-btn" style="margin:auto">SEARCH</button>
-    </g:form>
-    </div>
-    <table class="table-bordered centered">
-        <tr>
-            <b>
-            <th>No.</th>
-            <th>Task Name</th>
-            <th>Date Created</th>
-            <th>Date Completed</th>
-            <th>Completed</th>
-            <th></th>
-            </b>
-        </tr>
-        <g:each var = "r" in = "${results}" status="i">
-        <tr>
-            <td>${i+1}</td>
-            <td>${r.taskName}</td>
-            <td>${r.dateCreated}</td>
-            <td>${r.dateCompleted}</td>
-            <td>${r.complete}</td>
-            <g:hiddenField name="id" value="${r.id}"/>
-            <td>
-                <button class="edit btn btn-warning">EDIT</button>
-                <g:link action="delete" id="${r.id}">
-                    <button class="btn btn-danger delete" name="delete-btn">DELETE</button>
-                </g:link>
-            </td>
-        </tr>
-        </g:each>
-    </table>
-
-%{--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>--}%
-%{--<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>--}%
-%{--<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>--}%
-%{--<script>--}%
-%{--    const selected = document.querySelectorAll("#table td");--}%
-%{--</script>--}%
 
     %{--Scripts, will need to make a layout later so that we don't need to type these on every gsp--}%
     <asset:javascript src="application.js" charset="utf-8"/>
     <asset:javascript src="bootstrap.js"/>
     <asset:javascript src="jquery-2.2.0.min.js"/>
-%{--    <asset:javascript src="search.js"/>--}%
+    <asset:javascript src="search.js"/>
+</head>
+
+<body>
+
+<div class="centered">
+    <g:form action="search" method="post">
+        <g:textField name="search" value="" placeholder="Insert task name here" style="margin:auto"/>
+        <button type="submit" class="submit-btn">SEARCH</button>
+    </g:form>
+</div>
+<table class="table-bordered centered sortable">
+    <tr>
+        <th class="">No.</th>
+        <th>Task Name</th>
+        <th>Date Created</th>
+        <th>Date Completed</th>
+        <th>Completed</th>
+        <th></th>
+    </tr>
+    <g:each var="r" in="${results}" status="i">
+        <tr id="${r.id}">
+            <td>${i + 1}</td>
+            <td class="row-data">${r.taskName}</td>
+            <td class="row-data">${r.dateCreated}</td>
+            <td class="row-data">${r.dateCompleted}</td>
+            <td class="row-data">${r.complete}</td>
+            <td>
+                <button class="edit btn btn-warning edit-btn" data-id="${r.id}" data-task-name="${r.taskName}"
+                        data-toggle="modal" data-target="#myForm">EDIT</button>
+
+                <button class="btn btn-danger delete delete-btn" data-toggle="modal" data-target="#deleteConfirmation"
+                        data-id="${r.id}" id="${r.id}" onclick="onClickDeleteBtn(this.id)">DELETE</button>
+            </td>
+        </tr>
+    </g:each>
+</table>
+
+<br>
+
+<div class="div-edit modal centered" id="myForm" role="dialog"></div>
+
+<div class="modal" id="deleteConfirmation">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header danger">WARNING</div>
+
+            <div class="modal-body">
+                <p>Are you sure you want to delete this?</p>
+
+                <p>Data deleted can't be retrieved again.</p>
+            </div>
+
+            <div class="modal-footer">
+                <g:form action="delete" method="post">
+                    <button class="delete confirm-modal" name="delete" id="confirm-modal">YES</button>
+                </g:form>
+                <button class="" data-dismiss="modal">NO</button>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 </body>
 </html>

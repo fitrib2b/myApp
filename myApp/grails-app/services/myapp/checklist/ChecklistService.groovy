@@ -30,4 +30,13 @@ class ChecklistService {
         def checkList = Checklist.get(id)
         checkList.delete()
     }
+
+    @Transactional
+    def updateChecklist(String id, String tName, boolean comp, Date dComp){
+        def checkList = Checklist.get(id)
+        checkList.taskName = tName
+        checkList.complete = comp
+        checkList.dateCompleted = dComp
+        checkList.save()
+    }
 }

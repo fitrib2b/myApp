@@ -1,5 +1,7 @@
 package myapp.checklist
 
+import grails.converters.JSON
+
 class ChecklistController {
 
     ChecklistService checklistService
@@ -22,32 +24,52 @@ class ChecklistController {
     }
 
     def search() {
-//        def results = Checklist.findAll(params.search)
-        if(params.search==null){
-            render view: "search"
+
+        def results;
+        if(params.search){
+            String strText = "%"+params.search+"%"
+            results = checklistService.getSearchResult(strText)
         }else{
-            searchResult()
+            results = checklistService.getSearchResult("%%")
         }
-        render view: "search"
-    }
 
-    def searchResult(){
-
-        String strText = "%"+params.search+"%"
-        def results = checklistService.getSearchResult(strText)
         render view: "search", model: [results: results]
     }
 
+    def edit() {
+        //println("edit id="+params.id)
+        Checklist checklist = Checklist.get(params.id)
+
+//        render view: 'edit', model: [checklist: checklist]
+//        render (checklist.properties.subMap('id', 'taskName') as JSON)
+        render template: 'editModal', model: [checklist: checklist]
+//        render model: [checklist: checklist]
+    }
     def update(){
 
+        String id = params.id
+        String tName = params.name
+        Boolean done
+        if(params.completed){
+            done = params.completed
+        }else{
+            done = false
+        }
+        Date dDone = params.dCompleted
+        checklistService.updateChecklist(id, tName, done, dDone)
+        redirect(action:'search')
     }
+
+//    def deleteModal(){
+//        Checklist checklist = Checklist.get(params.id)
+//        render template: 'deleteModal', model: [checklist: checklist]
+//    }
 
     def delete(){
 
-        String id = params.id
+        String id = params.delete
+//        println("ID: "+id)
         checklistService.deleteChecklist(id)
-        String strText = "%"+"%"
-        def results = checklistService.getSearchResult(strText)
-        render view: "search", model: [results: results]
+        redirect(action: 'search')
     }
 }
