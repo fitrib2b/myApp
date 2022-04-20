@@ -4,7 +4,7 @@ $('#myForm ').on('hidden.bs.modal', function (e) {
     $('#myForm').empty();
 });
 
-$(".delete-btn").on('click', onClickDeleteBtn(element));
+$(".delete-btn").on('click', onClickDeleteBtn);
 
 // $(".delete-btn").on('click', onClickDeleteBtn);
 
@@ -29,9 +29,8 @@ function onClickEditBtn() {
     // window.location.href="http://localhost:8080/checklist/edit?id="+id;
 }
 
-function onClickDeleteBtn(element){
-    // var id = $(this).data('id');
-    var id = element;
+function onClickDeleteBtn(){
+    var id = $(this).data('id');
     // console.log("ID: "+id);
     document.getElementById("confirm-modal").value = id;
 }

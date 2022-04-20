@@ -101,8 +101,8 @@ hibernate:
 dataSource:
     driverClassName: org.mariadb.jdbc.Driver
     dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-    username: root
-    password: root
+    username: dev
+    password: dev
     url: jdbc:mariadb://${DATASOURCE_URL_IP:localhost}:3306/my_app
     dbCreate: create
     properties:

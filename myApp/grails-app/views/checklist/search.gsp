@@ -47,7 +47,7 @@
                         data-toggle="modal" data-target="#myForm">EDIT</button>
 
                 <button class="btn btn-danger delete delete-btn" data-toggle="modal" data-target="#deleteConfirmation"
-                        data-id="${r.id}" id="${r.id}" onclick="onClickDeleteBtn(this.id)">DELETE</button>
+                        data-id="${r.id}" id="${r.id}" >DELETE</button>
             </td>
         </tr>
     </g:each>
