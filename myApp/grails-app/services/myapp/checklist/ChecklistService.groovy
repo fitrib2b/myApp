@@ -1,6 +1,7 @@
 package myapp.checklist
 
 import grails.transaction.Transactional
+import myapp.Checklist
 
 @Transactional
 class ChecklistService {
@@ -10,18 +11,16 @@ class ChecklistService {
     }
 
     @Transactional
-    def saveChecklist(String tName, Boolean done, Date dCreate, Date dDone) {
-
-        Date dateCompleted = new Date()
-        if (!done) {
-            dateCompleted = null
-        }
-
-        new Checklist(taskName: tName, dateCreated: dCreate, complete: done, dateCompleted: dateCompleted).save()
+    def saveChecklist(String tName, Boolean done, Date dtCreate, Date dtCompleted) {
+        new Checklist(taskName: tName, dateCreated: dtCreate, complete: done, dateCompleted: dtCompleted).save()
     }
 
-    def getSearchResult(String strText){
+    def getSearchResult(String strText, String filter) {
         def results = Checklist.findAllByTaskNameIlike(strText,[readOnly: true])
+        if (filter) {
+            results = results.findAll { it.complete == filter.toBoolean() }
+        }
+
         return results
     }
 

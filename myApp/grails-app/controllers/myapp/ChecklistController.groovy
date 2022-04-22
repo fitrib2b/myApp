@@ -1,6 +1,6 @@
-package myapp.checklist
+package myapp
 
-import grails.converters.JSON
+import myapp.checklist.ChecklistService
 
 class ChecklistController {
 
@@ -16,21 +16,26 @@ class ChecklistController {
         String tName = params.taskName
         Boolean done = params.complete
         Date dCreate = params.dateCreated
-        Date dDone = params.dateCompleted
+
+        Date dDone = null
+        if (params.complete) {
+            dDone = params.dateCompleted
+        }
+
         checklistService.saveChecklist(tName, done, dCreate, dDone)
-
         render view: 'create'
-
     }
 
     def search() {
 
-        def results;
-        if(params.search){
+        def results
+        String filter = params.filter
+
+        if (params.search) {
             String strText = "%"+params.search+"%"
-            results = checklistService.getSearchResult(strText)
-        }else{
-            results = checklistService.getSearchResult("%%")
+            results = checklistService.getSearchResult(strText, filter)
+        } else {
+            results = checklistService.getSearchResult("%", filter)
         }
 
         render view: "search", model: [results: results]
@@ -49,14 +54,17 @@ class ChecklistController {
 
         String id = params.id
         String tName = params.name
+        Date dtDone
+
         Boolean done
         if(params.completed){
             done = params.completed
+            dtDone = params.dCompleted
         }else{
             done = false
         }
-        Date dDone = params.dCompleted
-        checklistService.updateChecklist(id, tName, done, dDone)
+
+        checklistService.updateChecklist(id, tName, done, dtDone)
         redirect(action:'search')
     }
 

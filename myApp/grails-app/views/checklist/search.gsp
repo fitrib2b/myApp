@@ -10,25 +10,28 @@
 <head>
     <meta name="layout" content="main"/>
     <title>Search Checklist</title>
-
-    %{--Scripts, will need to make a layout later so that we don't need to type these on every gsp--}%
-    <asset:javascript src="application.js" charset="utf-8"/>
-    <asset:javascript src="bootstrap.js"/>
-    <asset:javascript src="jquery-2.2.0.min.js"/>
+    <asset:javascript src="application.js"/>
+%{--    <asset:javascript src="jquery-2.2.0.min.js"/>--}%
     <asset:javascript src="search.js"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 </head>
 
 <body>
 
 <div class="centered">
-    <g:form action="search" method="post">
-        <g:textField name="search" value="" placeholder="Insert task name here" style="margin:auto"/>
+    <g:form action="search" method="get">
+        <g:textField name="search" id="search" value="${params.search}" placeholder="Insert task name here" style="margin:auto"/>
         <button type="submit" class="submit-btn">SEARCH</button>
+        <select name="filter" id="filter" class="filter">
+            <option value="" ${params.filter == '' ? 'selected=selected' : ''}>All Tasks</option>
+            <option value="true" ${params.filter == 'true' ? 'selected=selected' : ''}>Completed</option>
+            <option value="false" ${params.filter == 'false' ? 'selected=selected' : ''}>Not Completed</option>
+        </select>
     </g:form>
 </div>
-<table class="table-bordered centered sortable">
+<table class="table-bordered centered sortable table-filter">
     <tr>
-        <th class="">No.</th>
+        <th>No.</th>
         <th>Task Name</th>
         <th>Date Created</th>
         <th>Date Completed</th>
@@ -36,18 +39,19 @@
         <th></th>
     </tr>
     <g:each var="r" in="${results}" status="i">
-        <tr id="${r.id}">
+        <tr id="${r?.id}">
             <td>${i + 1}</td>
             <td class="row-data">${r.taskName}</td>
             <td class="row-data">${r.dateCreated}</td>
-            <td class="row-data">${r.dateCompleted}</td>
-            <td class="row-data">${r.complete}</td>
-            <td>
+            <td class="row-data">${r?.dateCompleted}</td>
+            <td class="row-data"> <i class="fa ${r.complete ? 'fa-check fa-solid' : 'fa-times fa-solid'}"/></td>
+             <td>
                 <button class="edit btn btn-warning edit-btn" data-id="${r.id}" data-task-name="${r.taskName}"
-                        data-toggle="modal" data-target="#myForm">EDIT</button>
+                data-toggle="modal" data-target="#myForm">EDIT</button>
 
-                <button class="btn btn-danger delete delete-btn" data-toggle="modal" data-target="#deleteConfirmation"
-                        data-id="${r.id}" id="${r.id}" >DELETE</button>
+
+        <button class="btn btn-danger delete delete-btn" data-toggle="modal" data-target="#deleteConfirmation"
+                        data-id="${r?.id}" id="${r?.id}">DELETE</button>
             </td>
         </tr>
     </g:each>

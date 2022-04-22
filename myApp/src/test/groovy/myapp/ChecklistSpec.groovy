@@ -1,7 +1,6 @@
 package myapp
 
 import grails.test.mixin.TestFor
-import myapp.checklist.Checklist
 import spock.lang.Specification
 
 /**

@@ -6,7 +6,17 @@ $('#myForm ').on('hidden.bs.modal', function (e) {
 
 $(".delete-btn").on('click', onClickDeleteBtn);
 
+$(".filter").on('change', filter);
+
+$(".submit-btn").on('click',retain);
+
 // $(".delete-btn").on('click', onClickDeleteBtn);
+
+function retain(){
+    var str = document.getElementById("search").value;
+    console.log(str);
+    return str;
+}
 
 function onClickEditBtn() {
     var id = $(this).data('id');
@@ -29,45 +39,36 @@ function onClickEditBtn() {
     // window.location.href="http://localhost:8080/checklist/edit?id="+id;
 }
 
-function onClickDeleteBtn(){
+function onClickDeleteBtn() {
     var id = $(this).data('id');
     // console.log("ID: "+id);
     document.getElementById("confirm-modal").value = id;
 }
 
-// function onClickDeleteBtn() {
-//
-//     var id = $(this).data('id');
-//     $.ajax({
-//         type: "POST",
-//         url: "deleteModal",
-//         data: {id: id},
-//         success: function (response) {
-//             console.log(response);
-//             $('.div-edit').append(response);
-//
-//             if (response.checklist) {
-//                 // find a way to show the template bootstrapeditmodal
-//             }
-//         }
-//     });
-// }
+function filter(){
+    window.location.assign(`search?filter=${this.value}&search=${retain()}`);
 
-function show(event) {
-    var rowId = event.target.parentNode.parentNode.id;
-    var data = document.getElementById(rowId).querySelectorAll(".row-data");
-    var taskName = data[0].innerHTML;
-    // var dCreate = data[1].innerHTML;
-    var dComp = data[2].innerHTML;
-    var comp = data[3].innerHTML;
-
-    document.getElementById("task-name").value = taskName;
-    // document.getElementById("dcr").value = dCreate;
-    document.getElementById("dco").value = dComp;
-
-    if (comp == true) {
-        document.getElementById("comp").checked = true;
-    }
-
-    // console.log()
 }
+// function filter() {
+//
+//     var selected = $('.filter').val();
+//     console.log(selected);
+//     //all option is selected
+//     if (selected === 'all') {
+//         $.each("tr").text().show();
+//
+//     }//completed option
+//     else if (selected === 'true') {
+//         // var tr = $(this);
+//         $('tr').each(function () {
+//             alert('tr'.id);
+//             this.find('td:eq("false")').text().hide();
+//             this.find('td:eq("false")').text().hide();
+//         });
+//
+//     }//not complete option
+//     else if (selected === 'false') {
+//         $.each("tr").find('td:eq("true")').text().hide();
+//         $.each("tr").find('td:eq("false")').text().show();
+//     }
+// }

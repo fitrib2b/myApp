@@ -11,5 +11,7 @@
 *= require grails
 *= require main
 *= require mobile
+*= require fontawesome
+*= require fontawesomeall
 *= require_self
 */
