@@ -4,22 +4,22 @@
             <g:hiddenField name="id" value="${checklist.id}"/>
             <div class="form-group modal-body">
                 <label for="name">Task Name:</label>
-                <g:textField id="task-name" name="name" value="${checklist.taskName}" type=""/>
+                <input type="text" id="name" name="taskName" value="${checklist.taskName}"/>
             </div>
 
             <div class="form-group modal-body">
-                <label for="dCompleted">Date Completed:</label>
-                <g:datePicker id="dco" name="dCompleted" value="${checklist.dateCompleted}"></g:datePicker>
+                <label for="dco">Date Completed:</label>
+                <input type="date" id="dco" name="dateCompleted" value="${formatDate(format:'yyyy-MM-dd',date:checklist.dateCompleted)}"/>
             </div>
 
             <div class="form-group modal-body">
                 <label for="completed">Completed:</label>
-                <g:checkBox id="comp" name="completed" value="${checklist.complete}"></g:checkBox>
+                <input type="checkbox" id="completed" name="complete" value="${checklist.complete}"/>
             </div>
 
             <div class="modal-footer">
                 <g:link action="update">
-                    <button type="submit" class="btn btn-accent">
+                    <button type="submit" class="btn btn-accent" id="edit-ckls-btn">
                         SAVE
                     </button>
                 </g:link>

@@ -2,17 +2,30 @@ package myapp.checklist
 
 import grails.transaction.Transactional
 import myapp.Checklist
+import myapp.ChecklistCommand
+
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 
 @Transactional
 class ChecklistService {
 
-    def serviceMethod() {
-
+    Date dateConverter(String dateStr) {
+        //'yyyy-MM-dd kk:mm:ss'
+        println(dateStr)
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'kk:mm")
+        Date done = formatter.parse(dateStr)
+        return done
     }
 
     @Transactional
-    def saveChecklist(String tName, Boolean done, Date dtCreate, Date dtCompleted) {
-        new Checklist(taskName: tName, dateCreated: dtCreate, complete: done, dateCompleted: dtCompleted).save()
+    def saveChecklist(ChecklistCommand cmd) {
+        Checklist cl = new Checklist()
+        cl.taskName = cmd.taskName
+        cl.dateCreated = cmd.dateCreated
+        cl.complete = cmd.complete
+        cl.complete ? {cl.dateCompleted = cmd.dateCompleted} : {cl.dateCompleted = null}
+        cl.save()
     }
 
     def getSearchResult(String strText, String filter) {
@@ -31,11 +44,11 @@ class ChecklistService {
     }
 
     @Transactional
-    def updateChecklist(String id, String tName, boolean comp, Date dComp){
-        def checkList = Checklist.get(id)
-        checkList.taskName = tName
-        checkList.complete = comp
-        checkList.dateCompleted = dComp
+    def updateChecklist(ChecklistCommand cmd){
+        def checkList = Checklist.get(cmd.id)
+        checkList.taskName = cmd.taskName
+        checkList.complete = cmd.complete
+        checkList.dateCompleted = cmd.dateCompleted
         checkList.save()
     }
 }

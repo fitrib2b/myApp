@@ -6,24 +6,30 @@ class ChecklistController {
 
     ChecklistService checklistService
 
-    def index() { }
+    def index() {}
 
     def create() {
-        render view:'create'
+        render view: 'create'
     }
 
-    def save() {
-        String tName = params.taskName
-        Boolean done = params.complete
-        Date dCreate = params.dateCreated
+//    def save() {
+//        String tName = params.taskName
+//        Boolean done = params.complete
+//        Date dCreate = params.dateCreated
+//
+//        Date dDone = null
+//        if (params.complete) {
+//            dDone = params.dateCompleted
+//        }
+//
+//        checklistService.saveChecklist(tName, done, dCreate, dDone)
+//        render view: 'create'
+//    }
 
-        Date dDone = null
-        if (params.complete) {
-            dDone = params.dateCompleted
-        }
+    def save(ChecklistCommand cmd) {
 
-        checklistService.saveChecklist(tName, done, dCreate, dDone)
-        render view: 'create'
+        cmd.validate() ? checklistService.saveChecklist(cmd) : cmd.errors.allErrors.each {println it}
+        search()
     }
 
     def search() {
@@ -32,7 +38,7 @@ class ChecklistController {
         String filter = params.filter
 
         if (params.search) {
-            String strText = "%"+params.search+"%"
+            String strText = "%" + params.search + "%"
             results = checklistService.getSearchResult(strText, filter)
         } else {
             results = checklistService.getSearchResult("%", filter)
@@ -42,30 +48,48 @@ class ChecklistController {
     }
 
     def edit() {
-        //println("edit id="+params.id)
+
         Checklist checklist = Checklist.get(params.id)
 
-//        render view: 'edit', model: [checklist: checklist]
-//        render (checklist.properties.subMap('id', 'taskName') as JSON)
         render template: 'editModal', model: [checklist: checklist]
-//        render model: [checklist: checklist]
     }
-    def update(){
 
-        String id = params.id
-        String tName = params.name
-        Date dtDone
+    //update without command
+//    def update() {
+//
+//        String id = params.id
+//        String tName = params.name
+//        Date dtDone = null
+//
+//        Boolean done
+//        if (params.completed) {
+//            done = params.completed
+//            dtDone = checklistService.dateConverter(params.dtCompleted)
+//
+//        } else {
+//            done = false
+//
+//        }
+//
+//        checklistService.updateChecklist(id, tName, done, dtDone)
+//        redirect(action: 'search')
+//    }
 
-        Boolean done
-        if(params.completed){
-            done = params.completed
-            dtDone = params.dCompleted
-        }else{
-            done = false
+    //update with command
+    def update(ChecklistCommand cmd) {
+
+        //saving update
+        println("cmd validate:" + cmd.validate())
+
+        if (cmd.validate()) {
+            checklistService.updateChecklist(cmd)
+        } else {
+            cmd.errors.allErrors.each {
+                println it
+            }
         }
 
-        checklistService.updateChecklist(id, tName, done, dtDone)
-        redirect(action:'search')
+        redirect(action: 'search')
     }
 
 //    def deleteModal(){
@@ -73,7 +97,7 @@ class ChecklistController {
 //        render template: 'deleteModal', model: [checklist: checklist]
 //    }
 
-    def delete(){
+    def delete() {
 
         String id = params.delete
 //        println("ID: "+id)
