@@ -1,37 +1,70 @@
-$(".edit-btn").on('click', onClickEditBtn);
+$ = jQuery;
 
-$('#myForm ').on('hidden.bs.modal', function (e) {
-    $('#myForm').empty();
+$('.edit-btn').on('click', showModal);
+$('.edit-btn').on('click', onClickEditBtn);
+
+$('.myForm ').on('hidden.bs.modal', function (e) {
+    // $('.myForm').remove();
+    $('.help-block').empty();
 });
 
 $(".delete-btn").on('click', onClickDeleteBtn);
 
 $(".filter").on('change', filter);
 
-$(".submit-btn").on('click',retain);
+$(".submit-btn").on('click', retain);
 
-// $(".delete-btn").on('click', onClickDeleteBtn);
-
-function retain(){
+function retain() {
     var str = document.getElementById("search").value;
     console.log(str);
     return str;
 }
 
+function showModal() {
+    $('#edit-modal').modal();
+}
+
 function onClickEditBtn() {
+
     var id = $(this).data('id');
-    console.log(id);
+    // console.log(id);
 
     $.ajax({
         type: "POST",
         url: "edit",
         data: {id: id},
         success: function (response) {
-            //console.log(response);
-            $('.div-edit').append(response);
+            // console.log(response);
+            // $('.div-edit').append(response);
 
             if (response.checklist) {
-                // find a way to show the template bootstrapeditmodal
+
+                var dateCreated = new Date(response.checklist.dateCreated),
+                    dateCompleted = new Date(response.checklist.dateCompleted),
+                    newDate = new Date();
+
+                var dcr = dateCreated.toISOString().split('T'),
+                    dcm = dateCompleted.toISOString().split('T'),
+                    nd = newDate.toISOString().split('T');
+
+                $("[name='id']").val(id);
+                $("[name=dateCreated]").val(dcr[0]);
+
+                if (response.checklist.dateCompleted) {
+                    $("[name=dateCompleted]").val(dcm[0]);
+                } else {
+                    $("[name=dateCompleted]").val(nd[0]);
+                }
+
+                $("[name=taskName]").val(response.checklist.taskName);
+
+                if (response.checklist.complete == true) {
+                    // document.getElementsByClassName('complete').checked = true;
+                    $("[name=complete]").prop('checked', true);
+                } else {
+                    // document.getElementsByClassName('complete').checked = false;
+                    $("[name=complete]").prop('checked', false);
+                }
             }
         }
     });
@@ -45,30 +78,7 @@ function onClickDeleteBtn() {
     document.getElementById("confirm-modal").value = id;
 }
 
-function filter(){
+function filter() {
     window.location.assign(`search?filter=${this.value}&search=${retain()}`);
 
 }
-// function filter() {
-//
-//     var selected = $('.filter').val();
-//     console.log(selected);
-//     //all option is selected
-//     if (selected === 'all') {
-//         $.each("tr").text().show();
-//
-//     }//completed option
-//     else if (selected === 'true') {
-//         // var tr = $(this);
-//         $('tr').each(function () {
-//             alert('tr'.id);
-//             this.find('td:eq("false")').text().hide();
-//             this.find('td:eq("false")').text().hide();
-//         });
-//
-//     }//not complete option
-//     else if (selected === 'false') {
-//         $.each("tr").find('td:eq("true")').text().hide();
-//         $.each("tr").find('td:eq("false")').text().show();
-//     }
-// }

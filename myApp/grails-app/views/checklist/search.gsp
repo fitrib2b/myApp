@@ -11,23 +11,30 @@
     <meta name="layout" content="main"/>
     <title>Search Checklist</title>
     <asset:javascript src="application.js"/>
-%{--    <asset:javascript src="jquery-2.2.0.min.js"/>--}%
     <asset:javascript src="search.js"/>
+    <asset:javascript src="update.js"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 </head>
 
 <body>
 
-<div class="centered">
-    <g:form action="search" method="get">
-        <g:textField name="search" id="search" value="${params.search}" placeholder="Insert task name here" style="margin:auto"/>
-        <button type="submit" class="submit-btn">SEARCH</button>
-        <select name="filter" id="filter" class="filter">
-            <option value="" ${params.filter == '' ? 'selected=selected' : ''}>All Tasks</option>
-            <option value="true" ${params.filter == 'true' ? 'selected=selected' : ''}>Completed</option>
-            <option value="false" ${params.filter == 'false' ? 'selected=selected' : ''}>Not Completed</option>
-        </select>
-    </g:form>
+<div class="centered container row">
+    <div class="col-xs-6">
+        <g:form action="search" method="get">
+            <g:textField name="search" id="search" value="${params.search}" placeholder="Insert task name here" style="margin:auto"/>
+            <button type="submit" class="submit-btn"><i class="fa fa-search"></i></button>
+            &nbsp;
+            <select name="filter" id="filter" class="filter">
+                <option value="" ${params.filter == '' ? 'selected=selected' : ''}>All Tasks</option>
+                <option value="true" ${params.filter == 'true' ? 'selected=selected' : ''}>Completed</option>
+                <option value="false" ${params.filter == 'false' ? 'selected=selected' : ''}>Not Completed</option>
+            </select>
+        </g:form>
+    </div>
+    <div class="col-xs-6">
+        <g:link action="create" ><button class="button btn btn-default">CREATE <i class="fa fa-plus fa-solid"></i></button></g:link>
+    </div>
+
 </div>
 <table class="table-bordered centered sortable table-filter">
     <tr>
@@ -42,12 +49,11 @@
         <tr id="${r?.id}">
             <td>${i + 1}</td>
             <td class="row-data">${r.taskName}</td>
-            <td class="row-data">${r.dateCreated}</td>
-            <td class="row-data">${r?.dateCompleted}</td>
+            <td class="row-data">${r.dateCreated.format('yyyy-MM-dd kk:mm:ss')}</td>
+            <td class="row-data">${r?.dateCompleted?.format('yyyy-MM-dd kk:mm:ss')}</td>
             <td class="row-data"> <i class="fa ${r.complete ? 'fa-check fa-solid' : 'fa-times fa-solid'}"/></td>
              <td>
-                <button class="edit btn btn-warning edit-btn" data-id="${r.id}" data-task-name="${r.taskName}"
-                data-toggle="modal" data-target="#myForm">EDIT</button>
+                <button class="edit btn btn-warning edit-btn" data-id="${r.id}" data-task-name="${r.taskName}">EDIT</button>
 
 
         <button class="btn btn-danger delete delete-btn" data-toggle="modal" data-target="#deleteConfirmation"
@@ -59,7 +65,7 @@
 
 <br>
 
-<div class="div-edit modal centered" id="myForm" role="dialog"></div>
+%{--<div class="div-edit modal centered" id="myForm" role="dialog"></div>--}%
 
 <div class="modal" id="deleteConfirmation">
     <div class="modal-dialog">
@@ -83,5 +89,6 @@
     </div>
 </div>
 
+<g:render template="editModal"/>
 </body>
 </html>

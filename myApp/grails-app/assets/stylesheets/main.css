@@ -23,6 +23,9 @@ html {
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
+span{
+    word-wrap: break-word;
+}
 
 html.no-cssgradients {
     background-color: #aaa;

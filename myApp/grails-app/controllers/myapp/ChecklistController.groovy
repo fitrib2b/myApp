@@ -1,10 +1,13 @@
 package myapp
 
+import grails.converters.JSON
 import myapp.checklist.ChecklistService
+import org.springframework.context.MessageSource
 
 class ChecklistController {
 
     ChecklistService checklistService
+    MessageSource messageSource
 
     def index() {}
 
@@ -28,7 +31,7 @@ class ChecklistController {
 
     def save(ChecklistCommand cmd) {
 
-        cmd.validate() ? checklistService.saveChecklist(cmd) : cmd.errors.allErrors.each {println it}
+        cmd.validate() ? checklistService.createChecklist(cmd) : cmd.errors.allErrors.each { println it }
         search()
     }
 
@@ -51,7 +54,8 @@ class ChecklistController {
 
         Checklist checklist = Checklist.get(params.id)
 
-        render template: 'editModal', model: [checklist: checklist]
+//        render template: 'editModal', model: [checklist: checklist]
+        render([checklist: checklist] as JSON)
     }
 
     //update without command
@@ -76,26 +80,22 @@ class ChecklistController {
 //    }
 
     //update with command
-    def update(ChecklistCommand cmd) {
+    def update(ChecklistUpdateCommand cmd) {
+
+        //check whether it passed the validation in the cmd
+//        println("cmd validate:" + cmd.validate())
 
         //saving update
-        println("cmd validate:" + cmd.validate())
-
         if (cmd.validate()) {
             checklistService.updateChecklist(cmd)
         } else {
-            cmd.errors.allErrors.each {
-                println it
-            }
+            cmd.errors.allErrors.each { println it }
         }
 
-        redirect(action: 'search')
-    }
+        Map resp = cmd.resolveErrors(cmd.errors, request.locale, messageSource) + [redirect: "/checklist/search"]
 
-//    def deleteModal(){
-//        Checklist checklist = Checklist.get(params.id)
-//        render template: 'deleteModal', model: [checklist: checklist]
-//    }
+        render(resp as JSON)
+    }
 
     def delete() {
 
