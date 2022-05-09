@@ -2,7 +2,7 @@ package myapp.login
 
 import myapp.Test
 
-class TestController {
+class TestController2 {
 
     static scaffold = Test
     def index() { }

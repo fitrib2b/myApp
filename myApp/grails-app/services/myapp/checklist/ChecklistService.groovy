@@ -11,14 +11,6 @@ import java.text.SimpleDateFormat
 @Transactional
 class ChecklistService {
 
-    Date dateConverter(String dateStr) {
-        //'yyyy-MM-dd kk:mm:ss'
-        println(dateStr)
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'kk:mm")
-        Date done = formatter.parse(dateStr)
-        return done
-    }
-
     @Transactional
     def createChecklist(ChecklistCommand cmd) {
         Checklist cl = new Checklist()

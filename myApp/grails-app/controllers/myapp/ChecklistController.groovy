@@ -1,15 +1,19 @@
 package myapp
 
 import grails.converters.JSON
+import grails.plugin.springsecurity.annotation.Secured
 import myapp.checklist.ChecklistService
 import org.springframework.context.MessageSource
 
+@Secured('ROLE_ADMIN')
 class ChecklistController {
 
     ChecklistService checklistService
     MessageSource messageSource
 
-    def index() {}
+    def index() {
+        search()
+    }
 
     def create() {
         render view: 'create'
@@ -31,7 +35,11 @@ class ChecklistController {
 
     def save(ChecklistCommand cmd) {
 
-        cmd.validate() ? checklistService.createChecklist(cmd) : cmd.errors.allErrors.each { println it }
+        cmd.validate() ?
+                checklistService.createChecklist(cmd) :
+                cmd.errors.allErrors.each {
+                    println it
+                }
         search()
     }
 

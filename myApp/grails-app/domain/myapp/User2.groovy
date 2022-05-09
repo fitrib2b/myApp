@@ -1,6 +1,6 @@
 package myapp
 
-class User {
+class User2 {
 
     String id
     String name

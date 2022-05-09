@@ -2,7 +2,7 @@
     <div class="modal-content">
         <g:form class="edit-form form-horizontal centered" action="update">
             <g:hiddenField name="id" value=""/>
-            <g:hiddenField name="dateCreated" value=""/>
+%{--            <g:hiddenField name="dateCreated" value=""/>--}%
             <div class="modal-header">Edit Task</div>
             <div class="form-group ">
                 <br>

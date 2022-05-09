@@ -28,7 +28,7 @@ pre {
 
 /* customizing bootstrap nav bar */
 .navbar {
-    margin-bottom: 0px;
+    margin-bottom: 1em;
     padding-right: 110px;
 }
 .navbar .container {

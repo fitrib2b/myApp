@@ -1,10 +1,8 @@
 $ = jQuery;
 
-$('.edit-btn').on('click', showModal);
 $('.edit-btn').on('click', onClickEditBtn);
 
 $('.myForm ').on('hidden.bs.modal', function (e) {
-    // $('.myForm').remove();
     $('.help-block').empty();
 });
 
@@ -20,35 +18,33 @@ function retain() {
     return str;
 }
 
-function showModal() {
-    $('#edit-modal').modal();
-}
-
 function onClickEditBtn() {
+    //show the modal
+    $('#edit-modal').modal();
 
+    //populate the fields
     var id = $(this).data('id');
-    // console.log(id);
 
     $.ajax({
         type: "POST",
-        url: "edit",
+        url: $(this).data('action'),
         data: {id: id},
         success: function (response) {
-            // console.log(response);
+            console.log(response);
             // $('.div-edit').append(response);
 
             if (response.checklist) {
 
-                var dateCreated = new Date(response.checklist.dateCreated),
-                    dateCompleted = new Date(response.checklist.dateCompleted),
+                var dateCompleted = new Date(response.checklist.dateCompleted),
+                    // dateCreated = new Date(response.checklist.dateCreated),
                     newDate = new Date();
 
-                var dcr = dateCreated.toISOString().split('T'),
-                    dcm = dateCompleted.toISOString().split('T'),
+                var dcm = dateCompleted.toISOString().split('T'),
+                    // dcr = dateCreated.toISOString().split('T'),
                     nd = newDate.toISOString().split('T');
 
                 $("[name='id']").val(id);
-                $("[name=dateCreated]").val(dcr[0]);
+                // $("[name=dateCreated]").val(dcr[0]);
 
                 if (response.checklist.dateCompleted) {
                     $("[name=dateCompleted]").val(dcm[0]);

@@ -18,10 +18,12 @@
 
 <body>
 
-<div class="centered container row">
-    <div class="col-xs-6">
+<div class="centered container container-fluid glyphicon-align-justify">
+    <div class="col-xs-3"></div>
+    <div class="col-xs-5">
         <g:form action="search" method="get">
-            <g:textField name="search" id="search" value="${params.search}" placeholder="Insert task name here" style="margin:auto"/>
+            <g:textField name="search" id="search" value="${params.search}" placeholder="Insert task name here"
+                         style="margin:auto"/>
             <button type="submit" class="submit-btn"><i class="fa fa-search"></i></button>
             &nbsp;
             <select name="filter" id="filter" class="filter">
@@ -31,63 +33,47 @@
             </select>
         </g:form>
     </div>
-    <div class="col-xs-6">
-        <g:link action="create" ><button class="button btn btn-default">CREATE <i class="fa fa-plus fa-solid"></i></button></g:link>
+
+    <div class="col-xs-1">
+        <g:link action="create"><button class="button btn btn-default">CREATE <i class="fa fa-plus fa-solid"></i>
+        </button></g:link>
     </div>
-
+    <div class="col-xs-3"></div>
 </div>
-<table class="table-bordered centered sortable table-filter">
-    <tr>
-        <th>No.</th>
-        <th>Task Name</th>
-        <th>Date Created</th>
-        <th>Date Completed</th>
-        <th>Completed</th>
-        <th></th>
-    </tr>
-    <g:each var="r" in="${results}" status="i">
-        <tr id="${r?.id}">
-            <td>${i + 1}</td>
-            <td class="row-data">${r.taskName}</td>
-            <td class="row-data">${r.dateCreated.format('yyyy-MM-dd kk:mm:ss')}</td>
-            <td class="row-data">${r?.dateCompleted?.format('yyyy-MM-dd kk:mm:ss')}</td>
-            <td class="row-data"> <i class="fa ${r.complete ? 'fa-check fa-solid' : 'fa-times fa-solid'}"/></td>
-             <td>
-                <button class="edit btn btn-warning edit-btn" data-id="${r.id}" data-task-name="${r.taskName}">EDIT</button>
 
-
-        <button class="btn btn-danger delete delete-btn" data-toggle="modal" data-target="#deleteConfirmation"
-                        data-id="${r?.id}" id="${r?.id}">DELETE</button>
-            </td>
+<div class="container container-fluid">
+    <table class="table-bordered centered sortable table-filter col-lg-offset-3">
+        <tr>
+            <th>No.</th>
+            <th>Task Name</th>
+            <th>Date Created</th>
+            <th>Date Completed</th>
+            <th>Completed</th>
+            <th></th>
         </tr>
-    </g:each>
-</table>
+        <g:each var="r" in="${results}" status="i">
+            <tr id="${r?.id}">
+                <td>${i + 1}</td>
+                <td class="row-data">${r.taskName}</td>
+                <td class="row-data">${r.dateCreated.format('yyyy-MM-dd kk:mm:ss')}</td>
+                <td class="row-data">${r?.dateCompleted?.format('yyyy-MM-dd kk:mm:ss')}</td>
+                <td class="row-data"><i class="fa ${r.complete ? 'fa-check fa-solid' : 'fa-times fa-solid'}"/></td>
+                <td>
+                    <button class="edit btn btn-warning edit-btn" data-id="${r.id}" data-action="edit">EDIT</button>
+
+
+                    <button class="btn btn-danger delete delete-btn" data-toggle="modal"
+                            data-target="#deleteConfirmation"
+                            data-id="${r?.id}" id="${r?.id}">DELETE</button>
+                </td>
+            </tr>
+        </g:each>
+    </table>
+</div>
 
 <br>
 
-%{--<div class="div-edit modal centered" id="myForm" role="dialog"></div>--}%
-
-<div class="modal" id="deleteConfirmation">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header danger">WARNING</div>
-
-            <div class="modal-body">
-                <p>Are you sure you want to delete this?</p>
-
-                <p>Data deleted can't be retrieved again.</p>
-            </div>
-
-            <div class="modal-footer">
-                <g:form action="delete" method="post">
-                    <button class="delete confirm-modal" name="delete" id="confirm-modal">YES</button>
-                </g:form>
-                <button class="" data-dismiss="modal">NO</button>
-            </div>
-
-        </div>
-    </div>
-</div>
+<g:render template="deleteModal"/>
 
 <g:render template="editModal"/>
 </body>
